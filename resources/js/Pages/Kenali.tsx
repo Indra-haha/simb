@@ -24,7 +24,7 @@ export default function Kenali({
     return (
         <>
             <Head title="Welcome | Sistem Informasi Bencana" />
-            <div className="relative bg-slate-700/80 text-white">
+            <div className="relative bg-slate-300 text-black">
                 <div className="relative flex flex-col">
                     <div className="relative w-full ">
                         <NavbarUser auth={auth} />

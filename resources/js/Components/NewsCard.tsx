@@ -15,27 +15,24 @@ export default function NewsCard() {
   const [cards, setCards] = useState<CardItem[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const SHEET_ID = "14f8XtTPeGjd2gIQBXwZG9fcJPSjGIG0hxClQmiQv5d0"
-  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`
+  const API_URL = "/berita"  // <-- ganti ke API Laravel
 
-  // Fetch data dari Google Sheet
+  // Fetch data dari database Laravel
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(SHEET_URL)
-        const text = await res.text()
-        const json = JSON.parse(text.substr(47).slice(0, -2))
+        const res = await fetch(API_URL)
+        const data = await res.json()
 
-        const rows = json.table.rows.map((r: any, i: number) => ({
-          id: parseInt(r.c[0]?.v || i.toString()),
-          title: r.c[2]?.v || "",
-          tgl: r.c[3]?.v || "",
-          img: r.c[4]?.v || "",
-          url: r.c[5]?.v || "#",
+        const mapped = data.map((item: any) => ({
+          id: item.id,
+          title: item.judul,
+          tgl: item.tanggal_berita,
+          img: item.gambar ? `/storage/${item.gambar}` : "",
+          url: item.url_berita ?? "#",
         }))
 
-        const filtered = rows.filter((r: CardItem) => r.title !== "")
-        setCards(filtered)
+        setCards(mapped)
       } catch (err) {
         console.error("Fetch error:", err)
       }
@@ -44,13 +41,12 @@ export default function NewsCard() {
     fetchData()
   }, [])
 
-  // Auto slide setiap 3 detik
+  // Auto-slide
   useEffect(() => {
     if (cards.length === 0) return
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % cards.length)
+      setCurrentIndex(prev => (prev + 1) % cards.length)
     }, 3000)
-
     return () => clearInterval(interval)
   }, [cards.length])
 
@@ -67,18 +63,12 @@ export default function NewsCard() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute inset-0 flex flex-col justify-between bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url(${card.img})`,
-                  }}
+                  style={{ backgroundImage: `url(${card.img})` }}
                   initial={{ x: "100%", opacity: 0 }}
                   animate={{ x: "0%", opacity: 1 }}
                   exit={{ x: "-100%", opacity: 0 }}
-                  transition={{
-                    duration: 0.8,
-                    ease: "easeInOut",
-                  }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
                 >
-                  {/* Header "Breaking News" */}
                   <div className="flex items-center mx-10 px-15 py-12">
                     <div className="relative flex size-5">
                       <span className="absolute animate-ping size-5 rounded-full bg-yellow-300 opacity-90"></span>
@@ -89,7 +79,6 @@ export default function NewsCard() {
                     </span>
                   </div>
 
-                  {/* Konten berita */}
                   <div className="text-3xl text-white text-start px-20 py-6 bg-black/40 backdrop-blur-sm">
                     <h2 className="text-3xl font-bold">{card.title}</h2>
                     <span className="text-xl opacity-90">{card.tgl}</span>
@@ -99,26 +88,17 @@ export default function NewsCard() {
           )}
       </AnimatePresence>
 
-      {/* Indikator bawah dengan sliding window 3 */}
+      {/* indikator */}
       {cards.length > 0 && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3">
-          {(() => {
-            const windowSize = 3
-            const total = cards.length
-            const windowStart = Math.floor(currentIndex / windowSize) * windowSize
-            const windowEnd = Math.min(windowStart + windowSize, total)
-            return cards.slice(windowStart, windowEnd).map((_, idx) => {
-              const actualIndex = windowStart + idx
-              return (
-                <span
-                  key={actualIndex}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    actualIndex === currentIndex ? "bg-yellow-400 scale-125" : "bg-white/50"
-                  }`}
-                />
-              )
-            })
-          })()}
+          {cards.slice(0, 4).map((_, idx) => (
+            <span
+              key={idx}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                idx === currentIndex ? "bg-yellow-400 scale-125" : "bg-white/50"
+              }`}
+            />
+          ))}
         </div>
       )}
     </div>

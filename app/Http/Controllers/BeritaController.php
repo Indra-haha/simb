@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BeritaController extends Controller
 {
@@ -13,7 +14,10 @@ class BeritaController extends Controller
         $beritas = Berita::with(['user', 'province'])->latest()->get();
         return view('berita.index', compact('beritas'));
     }
-
+    public function all()
+    {
+        return Berita::all();
+    }
     public function create()
     {
         $provinces = Province::orderBy('name')->get();
@@ -29,6 +33,7 @@ class BeritaController extends Controller
             'isi_berita'      => 'required',
             'url_berita'      => 'nullable|url',
             'kategori_kekeringan_id' => 'required|exists:kategori_kekeringans,id',
+            'kecamatan_name'   => 'required|string|max:255',
             'region_id'       => 'required|exists:regions,id',
         ]);
 
@@ -42,9 +47,11 @@ class BeritaController extends Controller
             'tanggal_berita' => $request->tanggal_berita,
             'isi_berita'     => $request->isi_berita,
             'url_berita'     => $request->url_berita,
+            'province_id'    => $request->province_id,
             'region_id'      => $request->region_id,
             'kategori_kekeringan_id' => $request->kategori_kekeringan_id,
             'gambar'         => $path,
+            'kecamatan_name'   => $request->kecamatan,
             'user_id'        => auth()->id(),
         ]);
 

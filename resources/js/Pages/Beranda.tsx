@@ -1,8 +1,8 @@
 import { PageProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import NewsHome from '@/Components/homeComp/news-home';
-import HeroSection from '@/Components/HeroSection';
 import NavbarUser from '@/Components/guest/NavbarUser';
+import StatisticHome from '@/Components/StatisticHome';
 
 export default function Welcome({
     auth,
@@ -14,16 +14,16 @@ export default function Welcome({
         <>
             <Head title="Welcome | Sistem Informasi Bencana" />
             <NavbarUser auth={auth} />
-            <div className="relative bg-slate-700/80 text-white">
+            <div className="relative bg-slate-300 text-white">
                 <div className="relative flex flex-col">
                     <div className="relative w-full ">
 
-                        
+
 
                         {/* CONTENT */}
                         <main className="z-0 mt-6 max-w-7xl mx-auto">
-                            <HeroSection />
                             <NewsHome />
+                            <StatisticHome/>
                         </main>
 
                         {/* FOOTER */}

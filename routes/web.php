@@ -6,6 +6,8 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\KategoriKekeringanController;
 use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\ReasonController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,7 +15,7 @@ Route::get('/', function () {
     return Inertia::render('Beranda', [
     ]);
 });
-Route::get('/informasi-bencana', function () {
+Route::get('/pengetahuan', function () {
     return Inertia::render('Kenali', [
     ]);
 });
@@ -49,8 +51,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/berita', [BeritaController::class, 'store']);
 });
 
+Route::get('/berita', [BeritaController::class, 'all']);
+Route::get('/statistik-home', [StatisticController::class, 'index']);
 
-
-
+Route::get('/news', [ReasonController::class, 'show'])->name('news.show');
 
 require __DIR__.'/auth.php';

@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 export default function SidebarToggle({
   open,
   setOpen,
@@ -11,7 +13,7 @@ export default function SidebarToggle({
       className="mt-1 p-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-center"
     >
       <span className="material-symbols-outlined">
-        {open ? "chevron_left" : "chevron_right"}
+        {open ? <FontAwesomeIcon icon={faBars} /> : <FontAwesomeIcon icon={faBars} />}
       </span>
     </button>
   );

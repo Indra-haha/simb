@@ -16,7 +16,9 @@ class Berita extends Model
         'isi_berita',
         'url_berita',
         'user_id',
+        'province_id',
         'region_id',
+        'kecamatan_name',
         'kategori_kekeringan_id',
     ];
 

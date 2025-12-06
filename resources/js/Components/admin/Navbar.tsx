@@ -3,6 +3,7 @@ import SidebarToggle from "../SidebarToggle";
 import ThemeToggle from "../ThemeToggle";
 import Dropdown from "@/Components/Dropdown";
 import { usePage } from "@inertiajs/react"; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Navbar({
   open,

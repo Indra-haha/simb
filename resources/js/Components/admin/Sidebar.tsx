@@ -1,4 +1,6 @@
 import { usePage } from "@inertiajs/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 export default function Sidebar({
   open,
   setOpen,
@@ -19,9 +21,9 @@ export default function Sidebar({
           {/* Navigation */}
           <nav className="flex flex-col gap-2">
             {[
-              { icon: "dashboard", label: "Dashboard", route: "/Admin/Dashboard" },
-              { icon: "article", label: "Manajemen Berita", route: "/Admin/Manajemen" },
-              { icon: "bar_chart", label: "Manajemen Statistik", route: "/Admin/Statistika" },
+              { icon: <FontAwesomeIcon icon={faHome} />, label: "Dashboard", route: "/Admin/Dashboard" },
+              // { icon: "article", label: "Manajemen Berita", route: "/Admin/Manajemen" },
+              // { icon: "bar_chart", label: "Manajemen Statistik", route: "/Admin/Statistika" },
             ].map((item, i) => {
               const isActive = url.startsWith(item.route); 
               return(
